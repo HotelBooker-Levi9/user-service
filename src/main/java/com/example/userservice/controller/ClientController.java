@@ -28,9 +28,7 @@ public class ClientController {
 		
 		ClientDTO clientDTO = ClientAdapter.convertToDTO(optClient.get());
 		
-		
 		return new ResponseEntity<ClientDTO>(clientDTO, HttpStatus.OK);
-	
 	}
 
 	
