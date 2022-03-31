@@ -3,6 +3,9 @@ package com.example.userservice.mapper;
 import com.example.userservice.dto.ClientDTO;
 import com.example.userservice.model.Client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientAdapter {
 	
 	//prebaci client u clientDTO
@@ -41,5 +44,12 @@ public class ClientAdapter {
 		return client;
 		
 	}
-	
+
+    public static List<ClientDTO> convertListToDTO(List<Client> clients) {
+		List<ClientDTO> dtos = new ArrayList<>();
+		for (Client client : clients)
+			dtos.add(convertToDTO(client));
+
+		return dtos;
+    }
 }

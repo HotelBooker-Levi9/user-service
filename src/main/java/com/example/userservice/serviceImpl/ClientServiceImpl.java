@@ -1,5 +1,6 @@
 package com.example.userservice.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,11 @@ public class ClientServiceImpl implements ClientService {
 	public Optional<Client> getById(Long id) {
 		return clientRepository.findById(id);
 	}
-	
-	
+
+	@Override
+	public List<Client> getAll() {
+		return clientRepository.findAll();
+	}
+
 
 }

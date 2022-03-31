@@ -1,5 +1,6 @@
 package com.example.userservice.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ public class ClientController {
 		return new ResponseEntity<ClientDTO>(clientDTO, HttpStatus.OK);
 	}
 
-	
+	@GetMapping("/")
+	public ResponseEntity<List<ClientDTO>> getAllClients() {
+		List<Client> clients = clientService.getAll();
+
+		List<ClientDTO> clientDTOs = ClientAdapter.convertListToDTO(clients);
+
+		return new ResponseEntity<List<ClientDTO>>(clientDTOs, HttpStatus.OK);
+	}
 }
 
