@@ -18,15 +18,15 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig implements AuthorizationServerConfigurer {
 
-    @Autowired
-    private DataSource dataSource;
+    /*@Autowired
+    private DataSource dataSource;*/
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-   /* @Bean
+    /* @Bean
     TokenStore jdbcTokenStore() {
         return new JdbcTokenStore(dataSource);
     }*/
@@ -40,7 +40,8 @@ public class AuthorizationServerConfig implements AuthorizationServerConfigurer 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("client").secret((passwordEncoder.encode("secret"))).scopes("READ", "WRITE")
-                .authorizedGrantTypes("password", "authorization_code");
+                .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(18000)
+                .authorizedGrantTypes("password", "authorization_code", "refresh_token");
 
     }
 
