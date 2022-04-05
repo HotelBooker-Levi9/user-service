@@ -11,30 +11,18 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
-
-import javax.sql.DataSource;
-
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig implements AuthorizationServerConfigurer {
-
-    /*@Autowired
-    private DataSource dataSource;*/
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    /* @Bean
-    TokenStore jdbcTokenStore() {
-        return new JdbcTokenStore(dataSource);
-    }*/
-
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.checkTokenAccess("isAuthenticated()").tokenKeyAccess("permitAll()");
-
     }
 
     @Override
@@ -46,8 +34,7 @@ public class AuthorizationServerConfig implements AuthorizationServerConfigurer 
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        //endpoints.tokenStore(jdbcTokenStore());
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager);
     }
 }
