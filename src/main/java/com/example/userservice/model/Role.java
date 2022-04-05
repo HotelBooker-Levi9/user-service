@@ -2,11 +2,8 @@ package com.example.userservice.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,4 +16,7 @@ public class Role {
 
     @Column(name = "name", unique = true, nullable = false)
     private String name;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Permission> permissions;
 }

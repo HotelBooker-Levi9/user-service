@@ -18,7 +18,6 @@ public class ClientAdapter {
 		clientDTO.setName(client.getName());
 		clientDTO.setSurname(client.getSurname());
 		clientDTO.setUsername(client.getUsername());
-		clientDTO.setSalt(client.getSalt());
 		clientDTO.setBlocked(client.isBlocked());
 		clientDTO.setDeleted(client.isDeleted());
 		clientDTO.setCartId(client.getCartId());
@@ -37,7 +36,6 @@ public class ClientAdapter {
 		client.setEmail(dto.getEmail());
 		client.setName(dto.getName());
 		client.setPassword(dto.getPassword());
-		client.setSalt(dto.getSalt());
 		client.setSurname(dto.getSurname());
 		client.setUsername(dto.getUsername());
 		
