@@ -10,4 +10,6 @@ import com.example.userservice.model.Client;
 public interface ClientRepository extends JpaRepository<Client, Long> {
 	
 	Optional<Client> findById(Long id);
+
+	Client findByCartId(Long cartId);
 }
