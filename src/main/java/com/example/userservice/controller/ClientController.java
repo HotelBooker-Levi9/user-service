@@ -3,6 +3,7 @@ package com.example.userservice.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.userservice.dto.EmailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,11 @@ public class ClientController {
 		List<ClientDTO> clientDTOs = ClientAdapter.convertListToDTO(clients);
 
 		return new ResponseEntity<List<ClientDTO>>(clientDTOs, HttpStatus.OK);
+	}
+
+	@GetMapping("clientEmailAndName/{cartId}")
+	public ResponseEntity<?> getClientEmailAndName(@PathVariable Long cartId) {
+		return clientService.getClientEmailAndName(cartId);
 	}
 }
 
