@@ -26,22 +26,4 @@ public class UserService implements UserDetailsService {
         }
 
     }
-
-    public boolean isEmailRegistered(String email) {
-        boolean isEmailRegistered = false;
-        for (User user : userRepository.findAll()) {
-            if (user.getEmail().equals(email))
-                isEmailRegistered = true;
-        }
-        return isEmailRegistered;
-    }
-
-    public boolean isUsernameRegistered(String username) {
-        boolean isUsernameRegistered = false;
-        for (User user : userRepository.findAll()) {
-            if (user.getUsername().equals(username))
-                isUsernameRegistered = true;
-        }
-        return isUsernameRegistered;
-    }
 }

@@ -7,6 +7,7 @@ import com.example.userservice.dto.ClientDTO;
 import com.example.userservice.dto.EmailDTO;
 import com.example.userservice.mapper.ClientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,18 +44,16 @@ public class ClientService {
 		return new ResponseEntity<>(new EmailDTO(client.getEmail(), client.getName()), HttpStatus.OK);
 	}
 
-	public ResponseEntity<?> registerClient(ClientDTO clientDto) throws Exception {
+	public ResponseEntity<?> registerClient(ClientDTO clientDto) {
 		Client client = ClientAdapter.convertToClient(clientDto);
-		if (userService.isEmailRegistered(client.getEmail())) {
-			throw new Exception(String.format("User with email '%s' is already registered.", clientDto.getEmail()));
-		}
-		if (userService.isUsernameRegistered(client.getUsername())) {
-			throw new Exception(String.format("User with username '%s' is already registered.", clientDto.getUsername()));
-		}
-
 		client.setPassword(passwordEncoder.encode(client.getPassword()));
-		saveNewClient(client);
 
+		try {
+			saveNewClient(client);
+		}
+		catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

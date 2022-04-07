@@ -23,13 +23,13 @@ public abstract class User implements UserDetails {
 	@SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
 	private Long id;
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 	@Column(name = "name", nullable = false)
 	private String name;
 	@Column(name = "surname", nullable = false)
 	private String surname;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 	@Column(name = "password", nullable = false)
 	private String password;
