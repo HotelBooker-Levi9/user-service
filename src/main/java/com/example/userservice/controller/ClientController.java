@@ -48,8 +48,13 @@ public class ClientController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerClient(@RequestBody ClientDTO clientDto) throws Exception {
-		return clientService.registerClient(clientDto);
+	public ResponseEntity<?> registerClient(@RequestBody ClientDTO clientDto) {
+		try {
+			return clientService.registerClient(clientDto);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }
