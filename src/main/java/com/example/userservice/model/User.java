@@ -1,5 +1,6 @@
 package com.example.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -36,17 +35,19 @@ public abstract class User implements UserDetails {
 	@Column(name = "isDeleted", nullable = false)
 	private boolean isDeleted;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id")
-	private Role role;
+		@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JsonIgnore
+	private Set<Role> roles = new HashSet<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-		role.getPermissions().forEach(permission -> {
-			grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName()));
-		});
+		for (Role role : roles) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
 
 		return grantedAuthorities;
 	}
