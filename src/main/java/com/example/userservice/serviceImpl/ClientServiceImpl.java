@@ -35,5 +35,11 @@ public class ClientServiceImpl implements ClientService {
 		return new ResponseEntity<>(new EmailDTO(client.getEmail(), client.getName()), HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<?> block(Long id) {
+		clientRepository.block(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 
 }
