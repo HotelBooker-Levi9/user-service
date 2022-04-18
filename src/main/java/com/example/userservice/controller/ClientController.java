@@ -1,5 +1,6 @@
 package com.example.userservice.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.userservice.dto.ClientDTO;
@@ -50,6 +52,11 @@ public class ClientController {
 	@PostMapping("/register")
 	public ResponseEntity<?> registerClient(@RequestBody ClientDTO clientDto) {
 		return clientService.registerClient(clientDto);
+	}
+
+	@GetMapping("/hello")
+	public String hello(Principal principal) {
+		return SecurityContextHolder.getContext().getAuthentication().toString();
 	}
 
 }
