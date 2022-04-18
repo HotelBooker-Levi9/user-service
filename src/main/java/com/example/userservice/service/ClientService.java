@@ -58,7 +58,7 @@ public class ClientService {
 	}
 
 	private void saveNewClient(Client client) {
-		//client.setRole(roleService.findByName("ROLE_CLIENT"));
+		client.addRole((roleService.findByName("ROLE_CLIENT")));
 		clientRepository.save(client);
 	}
 }

@@ -49,11 +49,6 @@ public class ClientController {
 		return clientService.getClientEmailAndName(cartId);
 	}
 
-	@PostMapping("/register")
-	public ResponseEntity<?> registerClient(@RequestBody ClientDTO clientDto) {
-		return clientService.registerClient(clientDto);
-	}
-
 	@GetMapping("/hello")
 	public String hello(Principal principal) {
 		return SecurityContextHolder.getContext().getAuthentication().toString();

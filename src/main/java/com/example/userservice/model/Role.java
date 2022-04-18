@@ -17,6 +17,4 @@ public class Role {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Permission> permissions;
 }

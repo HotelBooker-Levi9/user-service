@@ -76,4 +76,8 @@ public abstract class User implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
+
+	public void addRole(Role role) {
+		this.roles.add(role);
+	}
 }
