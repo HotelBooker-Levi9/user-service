@@ -12,4 +12,6 @@ public interface ClientService {
     List<Client> getAll();
 
     ResponseEntity<?> getClientEmailAndName(Long cartId);
+
+    ResponseEntity<?> block(Long id);
 }
