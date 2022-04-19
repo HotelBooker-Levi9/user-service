@@ -19,8 +19,6 @@ public class ClientAdapter {
 		clientDTO.setSurname(client.getSurname());
 		clientDTO.setUsername(client.getUsername());
 		clientDTO.setBlocked(client.isBlocked());
-		clientDTO.setDeleted(client.isDeleted());
-		clientDTO.setCartId(client.getCartId());
 		
 		return clientDTO;
 		
@@ -31,8 +29,6 @@ public class ClientAdapter {
 		Client client = new Client();
 		client.setId(dto.getId());
 		client.setBlocked(dto.isBlocked());
-		client.setDeleted(dto.isDeleted());
-		client.setCartId(dto.getCartId());
 		client.setEmail(dto.getEmail());
 		client.setName(dto.getName());
 		client.setPassword(dto.getPassword());
