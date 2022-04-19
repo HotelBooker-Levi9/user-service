@@ -17,9 +17,6 @@ public class ClientDTO {
 	private String surname;
 	private String email;
 	private String password;
-	private String salt;
-	private boolean isDeleted;
-	private Long cartId;
 	private boolean isBlocked;
 
 

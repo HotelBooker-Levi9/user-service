@@ -16,6 +16,7 @@ import com.example.userservice.service.ClientService;
 
 @RestController
 @RequestMapping(value = "/clients")
+@CrossOrigin("*")
 public class ClientController {
 	
 	@Autowired
@@ -30,13 +31,13 @@ public class ClientController {
 		return new ResponseEntity<ClientDTO>(clientDTO, HttpStatus.OK);
 	}
 
-	@GetMapping("/")
-	public ResponseEntity<List<ClientDTO>> getAllClients() {
+	@GetMapping("/all")
+	public ResponseEntity<?> getAllClients() {
 		List<Client> clients = clientService.getAll();
 
 		List<ClientDTO> clientDTOs = ClientAdapter.convertListToDTO(clients);
 
-		return new ResponseEntity<List<ClientDTO>>(clientDTOs, HttpStatus.OK);
+		return new ResponseEntity<>(clientDTOs, HttpStatus.OK);
 	}
 
 	@GetMapping("clientEmailAndName/{cartId}")
