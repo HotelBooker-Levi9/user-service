@@ -49,5 +49,8 @@ public class ClientController {
 	public ResponseEntity<?> blockClient(@PathVariable Long id) {
 		return clientService.block(id);
 	}
+
+	@PostMapping("/register")
+	public ResponseEntity<?> registerClient(@RequestBody ClientDTO clientDTO) { return clientService.registerClient(clientDTO); }
 }
 
