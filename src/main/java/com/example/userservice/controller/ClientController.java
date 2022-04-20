@@ -49,10 +49,5 @@ public class ClientController {
 		return clientService.getClientEmailAndName(cartId);
 	}
 
-	@GetMapping("/hello")
-	public String hello(Principal principal) {
-		return SecurityContextHolder.getContext().getAuthentication().toString();
-	}
-
 }
 

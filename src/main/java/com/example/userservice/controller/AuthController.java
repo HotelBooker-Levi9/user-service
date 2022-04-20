@@ -21,8 +21,4 @@ public class AuthController {
         return clientService.registerClient(clientDto);
     }
 
-    @GetMapping("/hello")
-    public String hello(Principal principal) {
-        return SecurityContextHolder.getContext().getAuthentication().toString();
-    }
 }
