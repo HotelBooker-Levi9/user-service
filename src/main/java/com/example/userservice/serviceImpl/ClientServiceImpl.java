@@ -9,6 +9,7 @@ import com.example.userservice.mapper.ClientAdapter;
 import com.example.userservice.model.Role;
 import com.example.userservice.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-	public static final String GATEWAY_URL = "http://localhost:8765/";
+	@Value("${gateway.url}")
+	private String gatewayUrl;
 	
 	@Autowired
 	private ClientRepository clientRepository;
@@ -63,7 +65,7 @@ public class ClientServiceImpl implements ClientService {
 		client.setRole(role);
 
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Long> cartId = restTemplate.getForEntity(GATEWAY_URL + "carts/createCart/" + client.getId(), Long.class);
+		ResponseEntity<Long> cartId = restTemplate.getForEntity(gatewayUrl + "carts/createCart/" + client.getId(), Long.class);
 
 		if(cartId.getBody() == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
