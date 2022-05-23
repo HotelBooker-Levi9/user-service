@@ -1,0 +1,158 @@
+version: "3.9"
+services:
+  mysqldb:
+      image: mysql
+      networks:
+        - hotel-mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=hotel-service
+      ports:
+        - 3307:3306 
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 60s
+        retries: 5
+        timeout: 10s 
+  hotel-service:
+      build:
+            context: ../hotel-service
+            dockerfile: Dockerfile
+      ports:
+        - "8201:8200"
+      networks:
+        - hotel-mysql
+      depends_on:
+        - mysqldb-cart
+        - api-gateway 
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/hotel-service?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+        - GATEWAY.URL=http://api-gateway:8765/
+        - RESERVATIONS=http://api-gateway:8765/reservations/reservationInFuture/
+      restart: always
+  
+  mysqldb-user:
+      image: mysql
+      networks:
+        - hotel-mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=user-service
+      ports:
+        - 3308:3306 
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 60s
+        retries: 5
+        timeout: 10s 
+  user-service:
+      build:
+            context: ./
+            dockerfile: Dockerfile
+      ports:
+        - "8001:8000"
+      networks:
+        - hotel-mysql
+      depends_on:
+        - mysqldb-user
+        - api-gateway 
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb-user:3306/user-service?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+        - GATEWAY.URL=http://gateway-url:8765/
+      restart: always
+
+  mysqldb-cart:
+      image: mysql
+      networks:
+        - hotel-mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=cart-service
+      ports:
+        - 3309:3306 
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 60s
+        retries: 5
+        timeout: 10s 
+  cart-service:
+      build:
+            context: ../cart-service
+            dockerfile: Dockerfile
+      ports:
+        - "8101:8100"
+      networks:
+        - hotel-mysql
+      depends_on:
+        - mysqldb-cart
+        - api-gateway 
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb-cart:3306/cart-service?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+        - GATEWAY.URL=http://api-gateway:8765/
+        - CAPACITY.FOR.HOTEL=http://api-gateway:8765/hotels/capacityForHotel/
+      restart: always
+  
+  email-service:
+      build:
+            context: ../email-service
+            dockerfile: Dockerfile
+      ports:
+        - "8301:8300"
+      networks:
+        - hotel-mysql
+      restart: always
+      depends_on:
+        - api-gateway
+
+  api-gateway:
+      build:
+            context: ../api-gateway
+            dockerfile: Dockerfile
+      ports:
+        - "8765:8765"
+      networks:
+        - hotel-mysql
+      restart: always
+      depends_on:
+        - eureka-server
+      environment:
+        - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://eureka-server:8761/eureka
+        - USER.URL=http://user-service:8000/
+        - HOTEL.URL=http://hotel-service:8200/
+        - CART.URL=http://cart-service:8100/
+        - EMAIL.URL=http://email-service:8300/
+
+  eureka-server:
+      build:
+            context: ../eureka-server
+            dockerfile: Dockerfile
+      ports:
+        - "8761:8761"
+      networks:
+        - hotel-mysql
+
+  frontend:
+      build:
+            context: ../frontend
+            dockerfile: Dockerfile
+      container_name: dev_frontend_react
+      ports: 
+        - "3000:3000"
+      volumes: 
+        - node_modules:/app/node_modules
+      stdin_open: true
+      networks:
+        - hotel-mysql
+      command: ['npm', 'run', 'start']
+      restart: unless-stopped
+
+
+
+  
+networks:
+  hotel-mysql:
+  microservice-communication:
+
+volumes:
+  node_modules:
+    name: frontend_node_modules
