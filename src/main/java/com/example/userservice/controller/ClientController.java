@@ -16,7 +16,7 @@ import com.example.userservice.service.ClientService;
 
 @RestController
 @RequestMapping(value = "/clients")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class ClientController {
 	
 	@Autowired
